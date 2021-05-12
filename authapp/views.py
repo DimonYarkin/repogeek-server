@@ -1,9 +1,10 @@
 from django.shortcuts import render, HttpResponseRedirect
 
-from authapp.forms import UserLoginForm, UserRegisterForm,UserProfileForm
+from authapp.forms import UserLoginForm, UserRegisterForm, UserProfileForm
 from django.contrib import auth, messages
 from django.urls import reverse
-
+from datetime import date
+from basketapp.models import Basket
 
 def login(request):
     if request.method == 'POST':
@@ -43,10 +44,19 @@ def logout(request):
     auth.logout(request)
     return HttpResponseRedirect(reverse('index'))
 
+
 def profile(request):
-    form = UserProfileForm()
+    if request.method == 'POST':
+        form = UserProfileForm(data=request.POST, files=request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('users:profile'))
+    else:
+        form = UserProfileForm(instance=request.user)
     context = {
         'title': 'GeekShop - Личный кабинет',
-        'form': form
+        'form': form,
+        'to_day': date.today(),
+        'baskets': Basket.objects.all()
     }
-    return render(request, 'authapp/profile.html',context)
+    return render(request, 'authapp/profile.html', context)
