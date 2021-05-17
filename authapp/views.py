@@ -7,6 +7,7 @@ from django.urls import reverse
 from datetime import date
 from basketapp.models import Basket
 
+
 def login(request):
     if request.method == 'POST':
         form = UserLoginForm(data=request.POST)
@@ -45,6 +46,7 @@ def logout(request):
     auth.logout(request)
     return HttpResponseRedirect(reverse('index'))
 
+
 @login_required
 def profile(request):
     if request.method == 'POST':
@@ -54,10 +56,12 @@ def profile(request):
             return HttpResponseRedirect(reverse('users:profile'))
     else:
         form = UserProfileForm(instance=request.user)
+
     context = {
         'title': 'GeekShop - Личный кабинет',
         'form': form,
         'to_day': date.today(),
-        'baskets': Basket.objects.all()
+        'baskets': Basket.objects.filter(user=request.user)
+
     }
     return render(request, 'authapp/profile.html', context)
