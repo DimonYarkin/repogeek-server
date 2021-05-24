@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from authapp.models import User
+from mainapp.models import ProductCategory,Product
+
 
 from adminapp.forms import UserAdminRegisterForm, UserAdminProfileForm
 from django.contrib import auth, messages
@@ -66,3 +68,8 @@ def admin_user_restore(request, user_id):
     user.is_active = True
     user.save()
     return HttpResponseRedirect(reverse('admin_staff:admin_users_read'))
+
+@user_passes_test(lambda u: u.is_superuser)
+def admin_product_category_read(request):
+    context = {'product_categorys':ProductCategory.objects.all()}
+    return render(request, 'adminapp/admin-product-category-read.html', context)
