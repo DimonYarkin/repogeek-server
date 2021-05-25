@@ -1,0 +1,53 @@
+{% extends 'adminapp/base.html' %}
+{% block content %}
+    <h1 class="mt-4">Категории</h1>
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-table mr-1"></i>
+            Категории
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>Наименование</th>
+                        <th>Описание</th>
+                    </tr>
+                    </thead>
+                    <tfoot>
+                    <tr>
+                        <th>id</th>
+                        <th>Наименование</th>
+                        <th>Описание</th>
+                    </tr>
+                    </tfoot>
+                    <tbody>
+                    {% for product_category in product_categorys %}
+                    <tr>
+                        <td>{{ product_category.id }}</td>
+
+                        <td>
+                            <a href="{% url 'admin_staff:admin_product_category_read'  %}" style="color: dodgerblue">
+                                {{ product_category.name }}
+                            </a>
+                        </td>
+                        <td>
+                            {{ product_category.desription }}
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer">
+            <a href="{% url 'admin_staff:admin_users_create' %}">
+                <button class="btn btn-success">Создать пользователя</button>
+            </a>
+        </div>
+    </div>
+{% endblock %}
