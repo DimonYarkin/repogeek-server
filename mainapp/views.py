@@ -4,6 +4,7 @@ from mainapp.models import Product, ProductCategory
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+from django.views.generic import ListView
 
 # Create your views here.
 def index(request):
@@ -28,3 +29,7 @@ def products(request, category_id=None, page=1):
         products_paginator = paginator.page(paginator.num_pages)
     context.update({'products': products_paginator})
     return render(request, 'mainapp/products.html', context)
+
+class ContactListView(ListView):
+    paginate_by = 3
+    model = Product
