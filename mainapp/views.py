@@ -30,6 +30,6 @@ def products(request, category_id=None, page=1):
     context.update({'products': products_paginator})
     return render(request, 'mainapp/products.html', context)
 
-class ContactListView(ListView):
+class ProducttListView(ListView):
     paginate_by = 3
     model = Product
