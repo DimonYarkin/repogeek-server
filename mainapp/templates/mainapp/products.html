@@ -97,7 +97,18 @@
                         </li>
 
 {#     <span class="current">#}
-{#            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.#}
+            Page
+                        <li class="page-item">
+                                <a class="page-link"
+                                   href="{% url 'mainapp:page' page_obj.number %}">
+                                    {{ page }}
+                                </a>
+
+{#                        {{ page_obj.number }}#}
+
+                            </li>
+
+                        of {{ page_obj.paginator.num_pages }}.
 {#        </span>#}
 {##}
 {#        {% if page_obj.has_next %}#}
@@ -106,7 +117,14 @@
 {#        {% endif %}#}
 {#                    #}
 
-
+                        {% for page in products.paginator.page_range %}
+                            <li class="page-item">
+                                <a class="page-link"
+                                   href="{% url 'mainapp:page' page %}">
+                                    {{ page }}
+                                </a>
+                            </li>
+                        {% endfor %}
 
 
 
