@@ -105,14 +105,36 @@ class UserDeleteView(DeleteView):
         self.object.save()
         return HttpResponseRedirect(success_url)
 
-@user_passes_test(lambda u: u.is_superuser)
-def admin_user_restore(request, user_id):
-    user = User.objects.get(id=user_id)
-    user.is_active = True
-    user.save()
-    return HttpResponseRedirect(reverse('admin_staff:admin_users_read'))
+class UserRestoreView(DeleteView):
+    model = User
+    template_name = 'adminapp/admin-users-update-delete.html'
+    success_url = reverse_lazy('admin_staff:admin_users_read')
 
-@user_passes_test(lambda u: u.is_superuser)
-def admin_product_category_read(request):
-    context = {'product_categorys':ProductCategory.objects.all()}
-    return render(request, 'adminapp/admin-product-category-read.html', context)
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        success_url = self.get_success_url()
+        self.object.is_active = True
+        self.object.save()
+        return HttpResponseRedirect(success_url)
+
+
+#
+# @user_passes_test(lambda u: u.is_superuser)
+# def admin_user_restore(request, user_id):
+#     user = User.objects.get(id=user_id)
+#     user.is_active = True
+#     user.save()
+#     return HttpResponseRedirect(reverse('admin_staff:admin_users_read'))
+
+class ProductCategoryListView(ListView):
+    model = ProductCategory
+    template_name = 'adminapp/admin-product-category-read.html'
+
+    @method_decorator(user_passes_test(lambda u: u.is_superuser))
+    def dispatch(self, request, *args, **kwargs):
+        return super(ProductCategoryListView, self).dispatch(request, *args, **kwargs)
+
+# @user_passes_test(lambda u: u.is_superuser)
+# def admin_product_category_read(request):
+#     context = {'product_categorys':ProductCategory.objects.all()}
+#     return render(request, 'adminapp/admin-product-category-read.html', context)

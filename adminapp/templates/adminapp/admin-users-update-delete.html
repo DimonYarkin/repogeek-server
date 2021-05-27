@@ -60,9 +60,12 @@
                     <input type="submit" value="Удалить" class="btn btn-danger btn-block">
                 </form>
                 {% else %}
-                    <a href="{% url 'admin_staff:admin_user_remove' user.id %}"
-                       class="btn btn-success btn-block ">Востановить</a>
-
+                    <form action="{% url 'admin_staff:admin_user_restore' user.id %}" method="post">
+                    {% csrf_token %}
+{#                    <a href="{% url 'admin_staff:admin_user_restore' user.id %}"#}
+{#                       class="btn btn-success btn-block ">Востановить</a>#}
+                        <input type="submit" value="Востановить" class="btn btn-success btn-block">
+                    </form>
 
                 {% endif %}
             </div>
