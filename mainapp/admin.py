@@ -22,7 +22,7 @@ class ProductCategoryAdmin(admin.ModelAdmin):
 class ProductAdmin(admin.ModelAdmin):
     list_display = ['name', 'quantity', 'price', 'category']
     fields = ('name', 'image', 'desription',('quantity', 'price'), 'category')
-    readonly_fields = ['desription']
+    # readonly_fields = ['desription']
     #sort
     ordering = ['-name']
     search_fields = ['name']
